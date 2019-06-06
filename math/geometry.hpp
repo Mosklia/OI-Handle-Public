@@ -70,10 +70,25 @@ namespace planimetry {
             inline double operator* (const Vector &__v) const {
                 return endpos.x * __v.endpos.x + endpos.y * __v.endpos.y;
             }
+            inline const Vector& operator* (double __v) const {
+                return Vector(endpos.x * __v, endpos.y * __v);
+            }
 
             // 其他运算
             inline double get_modulus() {
                 return endpos.dist(Point(0, 0));
+            }
+            inline double get_polar_angle() {
+                return atan2(endpos.y, endpos.x);
+                // 不知道为什么标准库的 atan2 是 y 在前，x 在后……
+            }
+            inline double inner_product(const Vector &__v) const {
+            // 内积
+                return *this * __v;
+            }
+            inline double outer_product_val(const Vector &__v) const {
+            // 外积数值（以 x+->y+ 方向为正方向）
+                return endpos.x * __v.endpos.y - endpos.y * __v.endpos.x;
             }
         private:
             Point endpos; // 采用坐标形式保存
